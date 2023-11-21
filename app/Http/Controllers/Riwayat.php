@@ -9,7 +9,11 @@ use Illuminate\Support\Facades\Auth;
 class Riwayat extends Controller
 {
     function index() {
-        $absen = Absensi::with("shift")->where("user_id", Auth::user()->id)->get();
+        if ( Auth::user()->is_karyawan !== null ) {
+            $absen = Absensi::with("shift")->where("user_id", Auth::user()->id)->get();
+        }else {
+            $absen = Absensi::with("shift")->get();
+        }
         return view("pages.dashboard.riwayat.index", [
             "absen" => $absen
         ]);
